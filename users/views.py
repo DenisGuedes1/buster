@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from .serializers import UserSerializer
 
 
+
 class User(APIView):
     def post(self, request: Request):
         serializer = UserSerializer(data=request.data)

@@ -49,3 +49,4 @@ class UserSerializer(serializers.Serializer):
         if validate_data["is_employee"]:
             return User.objects.create_superuser(**validate_data)
         return User.objects.create_user(**validate_data)
+
