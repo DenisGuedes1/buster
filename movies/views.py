@@ -1,14 +1,13 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView, Response, Request, status
-from rest_framework import permissions
 
 from .models import Movie
-from .serializer import MovieSerializer
+from .serializer import MovieSerializer, OrderMovieSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import(
     IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly)
 from users.permission import IsAdminOrReadOnly, IsAdminWithReadAccess
-from movies.permission import IsEmployee, IsSuperUserOrRead
+from movies.permission import AuthenticateUser, IsEmployee
 from rest_framework.decorators import permission_classes
 
     
@@ -43,4 +42,13 @@ class OtherMovieIdView(APIView):
         movie_del.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-        
+class OrderByMovie(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [AuthenticateUser]
+    def post(self, request: Request, movie_id=int):
+        movie = get_object_or_404(Movie, id=movie_id)
+        serializers = OrderMovieSerializer(data=request.data)
+        if serializers.is_valid():
+            order = serializers.save(user=request.user, movies=movie)
+            return Response(OrderMovieSerializer(order).data, status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
