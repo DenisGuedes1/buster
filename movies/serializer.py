@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Movie, RatingChoices
-from .models import OrderMovie
+from .models import MovieOrder
 
 class MovieSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
@@ -31,14 +31,14 @@ class OrderMovieSerializer(serializers.Serializer):
     #     return obj.user.email
     
     def create(self, validated_data):
-        return OrderMovie.objects.create(**validated_data)
-    
+        return MovieOrder.objects.create(**validated_data)
+  
     def to_representation(self, instance):
         new_objt = {
             'id': instance.id,
             'title': instance.movies.title,
             'buyed_at': instance.buyed_at,
-            'price': instance.price,
+            'price': format(instance.price, '.2f'),
             'buyed_by': instance.user.email
         }
         return new_objt

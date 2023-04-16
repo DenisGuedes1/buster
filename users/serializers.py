@@ -18,10 +18,10 @@ class UserSerializer(serializers.Serializer):
         error={}
 
         if email and User.objects.filter(email=email):
-            error['email'] = ['email already registered']
+            error['email'] = ['email already registered.']
 
         if username and User.objects.filter(username=username):
-           error['username'] = ['Username already taken']
+           error['username'] = ['username already taken.']
 
         if error:
             raise serializers.ValidationError(error)       
@@ -40,11 +40,14 @@ class UserSerializer(serializers.Serializer):
     #         user.save()
     #     return user
     
-    # def to_representation(self, instance):
-    #     rep = super().to_representation(instance)
-    #     if instance.is_employee:
-    #         rep['is_superuser'] = True
-    #     return rep
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['is_superuser'] = instance.is_employee
+        if instance.is_employee:
+            rep['is_superuser'] = True
+        else:
+            rep['is_superuser'] = instance.is_superuser    
+        return rep
     def create(self, validate_data):
         if validate_data["is_employee"]:
             return User.objects.create_superuser(**validate_data)

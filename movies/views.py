@@ -42,6 +42,7 @@ class OtherMovieIdView(APIView):
         movie_del.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 class OrderByMovie(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [AuthenticateUser]
