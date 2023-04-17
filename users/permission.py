@@ -12,4 +12,4 @@ class IsAdminWithReadAccess(IsAdminOrReadOnly):
     def has_permission(self, request: Request, view: View):
         if request.method == 'GET':
             return True
-        return super().has_permission(request, view)     
+        return super().has_permission(request, view)

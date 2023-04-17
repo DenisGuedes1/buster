@@ -4,8 +4,6 @@ from rest_framework.views import APIView, Response, Request, status
 from .models import Movie
 from .serializer import MovieSerializer, OrderMovieSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import(
-    IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly)
 from users.permission import IsAdminOrReadOnly, IsAdminWithReadAccess
 from movies.permission import AuthenticateUser, IsEmployee
 from rest_framework.decorators import permission_classes
