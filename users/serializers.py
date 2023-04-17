@@ -28,17 +28,6 @@ class UserSerializer(serializers.Serializer):
 
         return data
 
-    # def create(self, validated_data):
-    #     is_employee = validated_data.pop('is_employee', False)
-    #     user = User.objects.create_user(**validated_data)
-    #     user.is_employee = is_employee
-    #     if is_employee:
-    #         user.is_superuser = is_employee
-    #         user.is_employee
-          
-         
-    #         user.save()
-    #     return user
     
     def to_representation(self, instance):
         rep = super().to_representation(instance)

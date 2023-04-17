@@ -27,8 +27,7 @@ class OrderMovieSerializer(serializers.Serializer):
     buyed_by = serializers.SerializerMethodField()
     buyed_at = serializers.DateTimeField(read_only=True)
 
-    # def get_buyed_by(self, obj):
-    #     return obj.user.email
+
     
     def create(self, validated_data):
         return MovieOrder.objects.create(**validated_data)

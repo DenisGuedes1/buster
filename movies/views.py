@@ -4,9 +4,9 @@ from rest_framework.views import APIView, Response, Request, status
 from .models import Movie
 from .serializer import MovieSerializer, OrderMovieSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from users.permission import IsAdminOrReadOnly, IsAdminWithReadAccess
-from movies.permission import AuthenticateUser, IsEmployee
-from rest_framework.decorators import permission_classes
+from users.permission import IsAdminWithReadAccess
+from movies.permission import AuthenticateUser
+
 
     
 class MovieView(APIView):
@@ -28,13 +28,13 @@ class MovieView(APIView):
         return Response(serializer.data, status.HTTP_201_CREATED)
 
 class OtherMovieIdView(APIView):
-    
+    permission_classes = [IsAdminWithReadAccess]
+    authentication_classes = [JWTAuthentication]
     def get(self, request: Request, id=int) -> Response:
         movie = get_object_or_404(Movie, id=id)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
     
-    @permission_classes([IsEmployee])
     def delete(self, request: Request, id=int):
         movie_del = get_object_or_404(Movie, id=id)
         movie_del.delete()
