@@ -33,9 +33,9 @@ class UserId(APIView):
     
     def patch(self, request: Request, user_id=int):
         user = get_object_or_404(User, id=user_id)
-        print('user', user)
+       
         self.check_object_permissions(request, user)
-        print('data', request.data)
+        
 
         serializer = UserSerializer(user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
